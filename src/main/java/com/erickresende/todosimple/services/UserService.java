@@ -51,7 +51,7 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!")
+            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!");
         }
     }
 }
