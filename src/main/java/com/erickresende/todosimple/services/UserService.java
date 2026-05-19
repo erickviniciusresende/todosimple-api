@@ -1,0 +1,57 @@
+package com.erickresende.todosimple.services;
+
+import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.erickresende.todosimple.repositories.UserRepository;
+
+import jakarta.transaction.Transactional;
+
+import com.erickresende.todosimple.models.User;
+import com.erickresende.todosimple.repositories.TaskRepository;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+    
+    public User findById(Long id) {
+    Optional<User> user = this.userRepository.findById(id);
+    return user.orElseThrow(() ->
+        new RuntimeException(
+            "Usuário não encontrado! id: "
+            + id +
+            ", Tipo: " +
+            User.class.getName()
+            )
+        );
+    }
+
+    @Transactional
+    public User create(User obj) {
+        obj.setId(null);
+        obj = this.userRepository.save(obj);
+        return obj;
+    }
+
+    @Transactional
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        newObj.setPassword(obj.getPassword());
+        return this.userRepository.save(newObj);
+    }
+
+    public void delete(Long id) {
+        findById(id);
+        try {
+            this.userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!")
+        }
+    }
+}
