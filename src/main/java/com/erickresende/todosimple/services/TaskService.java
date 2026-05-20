@@ -59,7 +59,7 @@ public class TaskService {
     public void delete(Long id) {
         findById(id);
         try {
-            this.userRepository.deleteById(id);
+            this.taskRepository.deleteById(id);
         } catch (Exception e) {
             throw new RuntimeException("Não é possivel deletar pois há entidades relacionadas!");
         }

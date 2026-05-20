@@ -24,14 +24,14 @@ import com.erickresende.todosimple.services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 @Validated
 public class UserController {
     
     @Autowired
     private UserService userService;
 
-    @GetMapping("/(id)")
+    @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         User obj = this.userService.findById(id);
         return ResponseEntity.ok().body(obj);
